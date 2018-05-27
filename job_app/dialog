@@ -1,0 +1,31 @@
+##!/bin/sh
+# ответы на некоторые вопросы и сохранение ответов
+
+gdialog --title "Опросник" --msgbox "Поучаствуйте в моем опроснике" 
+
+gdialog --title "Подтверждение" --yesno "Вы будете участвовать в ответах?"  9 18
+
+if [ $? != 0 ]; then
+	    gdialog --infobox "жаль, но все равно спасибо" 5 20
+	    sleep 2
+	    gdialog --clear
+	    exit 0
+fi
+
+gdialog --title "Опросничек" --inputbox "Введите свое имя" 9 30 2>1.txt
+Q_NAME=$(cat 1.txt)
+
+gdialog --menu "$Q_NAME, какая музыка вам больше нравится?" 11 60 4 1 "Classical" 2 "Jazz" 3 "Country" 4 "Other" 2>2.txt
+
+Q_MUSIC=$(cat 2.txt)
+# строка || [ "$Q_MUSIC" = "2|2" ] добавляется, если выбор производится не мышью, а с клавиатуры! 
+if [ "$Q_MUSIC" = "2" ] || [ "$Q_MUSIC" = "2|2" ]; then
+	    gdialog --title "Любите джаз" --msgbox "хороший выбор!" 12 25
+else
+	    gdialog --title "Вы явно не любите джаз" --msgbox "Позор" 12 25  
+fi
+#rm ./1.txt ./2.txt
+sleep 1
+gdialog --clear
+exit 0
+
